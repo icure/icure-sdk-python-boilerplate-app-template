@@ -1,0 +1,1 @@
+# icure-sdk-python-boilerplate-app-template
