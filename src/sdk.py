@@ -1,13 +1,8 @@
 import base64
-from icure import IcureSdk
-from icure.authentication import UsernamePassword
-from icure.model import RecoveryDataUseFailureReason, DataOwnerWithType, CryptoActorStubWithType, DataOwnerType
+from icure.model import RecoveryDataUseFailureReason, DataOwnerWithType, CryptoActorStubWithType, DataOwnerType, DecryptedPatient, DecryptedContact, DecryptedService, DecryptedContent, CodeStub, Measure, PatientByHcPartyDateOfBirthBetweenFilter, PatientByIdsFilter, SubscriptionEventType, ContactByHcPartyTagCodeDateFilter
 from icure.model.specializations import KeypairFingerprintV1String
-from icure.storage import FileSystemStorage
 from icure.CryptoStrategies import CryptoStrategies, KeyDataRecoveryRequest, RecoveredKeyData, ExportedKeyData, KeyGenerationRequestResult, KeyGenerationRequestResultAllow, RsaEncryptionAlgorithm
 from typing import Union, Dict, List, Callable, Optional
-
-sdk: IcureSdk = None
 
 
 class MyCryptoStrategies(CryptoStrategies):
@@ -50,16 +45,3 @@ class MyCryptoStrategies(CryptoStrategies):
 
     def data_owner_requires_anonymous_delegation(self, data_owner: CryptoActorStubWithType) -> bool:
         return data_owner.type != DataOwnerType.Hcp
-
-
-def init_icure_api(username: str, password: str, storage_folder: str, existing_key_pair: Optional[Dict[str, str]] = None) -> IcureSdk:
-    global sdk
-    if sdk is None:
-        sdk = IcureSdk(
-            "https://api.icure.cloud",
-            UsernamePassword(username, password),
-            FileSystemStorage(storage_folder),
-            MyCryptoStrategies(existing_key_pair),
-            executor=None
-        )
-    return sdk
