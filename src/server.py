@@ -10,13 +10,11 @@ app = Flask(__name__)
 
 
 def init_sdk_with_config():
-    public_key = CONFIG["icure"].get("parent_organization_public_key")
-    private_key = CONFIG["icure"].get("parent_organization_private_key")
     return init_icure_api(
+        CONFIG["icure"]["project_id"],
         CONFIG["icure"]["parent_organization_username"],
         CONFIG["icure"]["parent_organization_token"],
         CONFIG["icure"].get("local_storage_location", "./scratch/localStorage"),
-        {public_key: private_key} if public_key is not None and private_key is not None else None
     )
 
 
